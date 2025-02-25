@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  node:
+    image: node:14
+
+  python:
+    image: python:3.9
+
+  gcc:
+    image: gcc:latest

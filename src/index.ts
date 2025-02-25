@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import cors from 'cors';
 import Docker from 'dockerode';
+import cors from 'cors';
 
 const app = express();
 const docker = new Docker();
@@ -48,28 +48,28 @@ async function runCode(language: string, code: string): Promise<string> {
     switch (language) {
         case 'js':
             image = 'node:14';
-            cmd = ['node', '-e', code]; // Передаем команду как массив
+            cmd = ['node', '-e', code];
             break;
         case 'python':
             image = 'python:3.9';
-            cmd = ['python', '-c', code]; // Передаем команду как массив
+            cmd = ['python', '-c', code];
             break;
         case 'cpp':
             image = 'gcc:latest';
-            cmd = ['bash', '-c', `echo "${code}" > main.cpp && g++ main.cpp -o main && ./main`]; // Передаем команду как массив
+            cmd = ['bash', '-c', `echo "${code}" > main.cpp && g++ main.cpp -o main && ./main`];
             break;
         case 'ts':
             image = 'node:14';
-            cmd = ['bash', '-c', `npm install -g typescript && echo "${code}" > main.ts && tsc main.ts && node main.js`]; // Передаем команду как массив
+            cmd = ['bash', '-c', `npm install -g typescript && echo "${code}" > main.ts && tsc main.ts && node main.js`];
             break;
         default:
-            throw new Error('Unsupported language');
+            throw new Error('Не поддерживаемый язык');
     }
 
     console.log(`Создание контейнера с образом: ${image}`);
     const container = await docker.createContainer({
         Image: image,
-        Cmd: cmd, // Передаем команду как массив
+        Cmd: cmd,
         Tty: false,
     });
 
@@ -85,7 +85,7 @@ async function runCode(language: string, code: string): Promise<string> {
     });
 
     console.log(`Удаление контейнера...`);
-    await container.remove(); // Удаляем контейнер после получения логов
+    await container.remove();
     return output;
 }
 
